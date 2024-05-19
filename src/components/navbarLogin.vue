@@ -6,10 +6,8 @@
                     <img class="logo_image" src='../assets/img/logo.png' alt="Logo">
                 </div>
                 <ul class="nav-links">
-                    <li><router-link to="/dashboard">Dashboard</router-link></li>
-                    <li><router-link to="/proveedores">Proveedores</router-link></li>
-                    <li><router-link to="/pagos">Pagos</router-link></li>
-                    <li><router-link to="/historial">Historial</router-link></li>
+                    <li><router-link to="/">Iniciar Sesión</router-link></li>
+                    <li><router-link to="/register">Registrarse</router-link></li>
                 </ul>
             </div>
         </nav>
