@@ -1,6 +1,9 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+
 import NavBar from './components/NavBar.vue'
+
+
 </script>
 
 <template>
@@ -8,7 +11,10 @@ import NavBar from './components/NavBar.vue'
     <NavBar />
   </header>
 
-  <RouterView />
+  <body>
+    <RouterView />
+  </body>
+  
 </template>
 
 <style>
@@ -23,4 +29,8 @@ import NavBar from './components/NavBar.vue'
   width: 90%;
   margin: 0 auto;
 }
+body{
+  background-color: #008ba3;
+}
+
 </style>
