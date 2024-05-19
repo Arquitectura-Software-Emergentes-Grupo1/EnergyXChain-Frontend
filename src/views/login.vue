@@ -11,8 +11,11 @@
       <label for="password" class="input-label">Contraseña</label>
     </FloatLabel>
     <div class="forgot-password" style="margin-bottom: 10px;">¿Olvidó la contraseña? <RouterLink to="/forgot-password" style="color: #024955">Cambiar contraseña</RouterLink></div>
-    <button class="login-button" style="margin-bottom: 25px;">Iniciar Sesión</button>
+    <button class="login-button" style="margin-bottom: 25px;" @click="login()">Iniciar Sesión</button>
     <div class="register">¿Sin registrarte aún? <RouterLink to="/register" style="color: #024955">Registrar</RouterLink></div>
+
+    <p v-if="isError" style="color: red; ">{{ errorMessage }}</p>
+
   </div>
 </template>
 
@@ -20,6 +23,7 @@
 import { ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import FloatLabel from 'primevue/floatlabel';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 export default {
   components: {
@@ -29,7 +33,35 @@ export default {
   setup() {
     const email = ref('');
     const password = ref('');
-    return { email, password };
+    const errorMessage = ref('');
+    const isError = ref(false);
+
+    const login = () => {
+      signInWithEmailAndPassword(getAuth(), email.value, password.value)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((e) => {
+          isError.value = true;
+          switch (e.code) {
+            case 'auth/invalid-email':
+              errorMessage.value = 'Correo electrónico inválido';
+              break;
+            case 'auth/user-not-found':
+              errorMessage.value = 'Usuario no encontrado';
+              break;
+            case 'auth/wrong-password':
+              errorMessage.value = 'Contraseña incorrecta';
+              break;
+            default:
+              errorMessage.value = 'Error al iniciar sesión';
+              break;
+          }
+        });
+    };
+    
+    return { email, password, login , errorMessage, isError};
   }
 }
 </script>

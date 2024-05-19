@@ -30,17 +30,19 @@
        <Checkbox v-model="privacyTerms" inputId="privacyTerms" name="privacyTerms" value="privacyTerms" />
        <label for="privacyTerms" class="ml-2"> Acepto los Términos y Condiciones de EnergyXChain </label>
       
-       <button class="register-button" style="margin-bottom: 15px;">Registrarse</button>
+       <button class="register-button" style="margin-bottom: 15px;" @click="register()">Registrarse</button>
       <div style="font-size: 15px;">¿Ya eres usuario? <RouterLink to="/" style="color:#024955">Iniciar Sersión</RouterLink></div>
     </div>
   </template>
   
   <script>
   import { ref } from 'vue';
+  import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
   import InputText from 'primevue/inputtext';
   import FloatLabel from 'primevue/floatlabel';
-import Checkbox from 'primevue/checkbox';
+  import Checkbox from 'primevue/checkbox';
 
+  
   export default {
     components: {
       InputText,
@@ -55,7 +57,20 @@ import Checkbox from 'primevue/checkbox';
       const email = ref('');
       const password = ref('');
       const privacyTerms = ref(false);
-      return { name, phoneNumber, age, typeUser, email, password, privacyTerms };
+
+      const register = () => {
+        createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+          .then((userCredential) => {
+            console.log('Usuario registrado', userCredential.user.uid)
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+          });
+      };
+
+      return { name, phoneNumber, age, typeUser, email, password, privacyTerms , register};
     }
   }
   </script>
