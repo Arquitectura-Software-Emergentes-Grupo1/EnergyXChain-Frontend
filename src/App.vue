@@ -3,7 +3,6 @@ import { RouterLink, RouterView } from 'vue-router'
 
 import NavbarLogin from './components/navbarLogin.vue'
 
-
 </script>
 
 <template>

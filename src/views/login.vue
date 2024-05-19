@@ -7,7 +7,7 @@
       <label for="email" class="input-label">Correo Electrónico</label>
     </FloatLabel>
     <FloatLabel style="margin-bottom: 25px;">
-      <InputText id="password" v-model="password" />
+      <InputText id="password" v-model="password" :type="'password'"/>
       <label for="password" class="input-label">Contraseña</label>
     </FloatLabel>
     <div class="forgot-password" style="margin-bottom: 10px;">¿Olvidó la contraseña? <RouterLink to="/forgot-password" style="color: #024955">Cambiar contraseña</RouterLink></div>
@@ -21,6 +21,7 @@
 
 <script>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router'; 
 import InputText from 'primevue/inputtext';
 import FloatLabel from 'primevue/floatlabel';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
@@ -31,6 +32,7 @@ export default {
     FloatLabel
   },
   setup() {
+    const router = useRouter();
     const email = ref('');
     const password = ref('');
     const errorMessage = ref('');
@@ -41,6 +43,7 @@ export default {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log(user);
+          router.push('/home');
         })
         .catch((e) => {
           isError.value = true;

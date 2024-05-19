@@ -23,7 +23,7 @@
         <label for="email" class="input-label">Correo Electrónico</label>
       </FloatLabel>
       <FloatLabel style="margin-bottom: 30px;">
-        <InputText id="password" v-model="password" />
+        <InputText id="password" v-model="password" :type="'password'"/>
         <label for="password" class="input-label">Contraseña</label>
       </FloatLabel>
       
