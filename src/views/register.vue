@@ -42,6 +42,9 @@
   import FloatLabel from 'primevue/floatlabel';
   import Checkbox from 'primevue/checkbox';
 
+  // Models
+  import user from '../models/user.js';
+
   
   export default {
     components: {
@@ -61,7 +64,22 @@
       const register = () => {
         createUserWithEmailAndPassword(getAuth(), email.value, password.value)
           .then((userCredential) => {
+            const uid = userCredential.user.uid;
+            
+            user.uid = uid;
+            user.name = name.value;
+            user.phoneNumber = phoneNumber.value;
+            user.age = age.value;
+            user.typeUser = typeUser.value;
+            user.email = email.value;
+
+            // Local Storage
+            localStorage.setItem('userData', JSON.stringify(user));
+            console.log(user);
+
             console.log('Usuario registrado', userCredential.user.uid)
+
+            router.push('/home');
           })
           .catch((error) => {
             const errorCode = error.code;
