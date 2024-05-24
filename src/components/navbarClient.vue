@@ -6,22 +6,32 @@
                     <img class="logo_image" src='../assets/img/logo.png' alt="Logo">
                 </div>
                 <ul class="nav-links">
-                    <li><router-link to="/">Iniciar Sesión</router-link></li>
-                    <li><router-link to="/register">Registrarse</router-link></li>
+                    <li><router-link to="/home">Dashboard</router-link></li>
+                    <li><router-link to="/proveedores">Proveedores</router-link></li>
+                    <li><router-link to="/pagos">Pagos</router-link></li>
+                    <li><router-link to="/historial">Historial</router-link></li>
+                    <li><router-link to="/perfil" style="display: flex; flex-direction: row; gap: .5rem; align-items: center;"><img src="../assets/img/userIcon.png" class="userIcon"><p>Perfil</p></router-link></li>
                 </ul>
             </div>
         </nav>
     </div>
 </template>
-<script>
-export default {
-    
-}
+<script setup>
+ import { useRouter } from 'vue-router';
+ import { ref, onMounted } from 'vue';
+
+ const userData = ref(null);
+onMounted(() => {
+    const storedUserData = JSON.parse(localStorage.getItem('userData'));
+    if (storedUserData) {
+        userData.value = storedUserData;
+        console.log(userData.value);
+    }
+});
 </script>
 <style scoped>
     /* Estilos del navbar */
     .nav-bar {
-        background-color: transparent;
         width: 100%;
         z-index: 997;
         transition: all 0.3s ease;
@@ -29,7 +39,7 @@ export default {
         justify-content: space-between;
         transition: all 0.6s ease;
         padding: .50rem;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+        background-color: #C3EDF5;
     }
     .nav-bar-content {
         display: flex;
@@ -58,10 +68,11 @@ export default {
         list-style-type: none;
         margin: 0;
         padding: 0;
+        align-items: center;
     }
     .nav-links li a {
         display: block;
-        color: white;
+        color: black;
         text-align: center;
         padding: 14px 16px;
         text-decoration: none;
@@ -70,5 +81,11 @@ export default {
     .nav-links li a:hover {
         font-size: 105%;
         transition: font-size 0.3s ease;
+    }
+    .userIcon{
+        height: 40px;
+        width: auto;
+        border: 1.5px solid black;
+        border-radius: 50%;
     }
 </style>

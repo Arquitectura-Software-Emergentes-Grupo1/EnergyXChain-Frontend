@@ -118,7 +118,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .register-card {
   background-color: #C3EDF5;
   border-radius: 14px;
@@ -156,4 +156,5 @@ export default {
   width: 97%;
   margin: 0 auto;
 }
+
 </style>

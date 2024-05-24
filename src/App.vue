@@ -1,13 +1,21 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import NavbarLogin from './components/navbarLogin.vue'
+import NavbarClient from './components/navbarClient.vue'
 
+const route = useRoute();
+
+const showNavbarLogin = computed(() => {
+  return route.path === '/' || route.path === '/register';
+});
 </script>
 
 <template>
   <header>
-    <navbarLogin ></navbarLogin >
+    <navbarLogin v-if="showNavbarLogin"></navbarLogin >
+    <navbarClient v-else></navbarClient >
   </header>
 
   <body>
@@ -22,14 +30,11 @@ import NavbarLogin from './components/navbarLogin.vue'
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
 }
 .container{
   width: 90%;
   margin: 0 auto;
 }
-body{
-  background-color: #008ba3;
-}
+
 
 </style>

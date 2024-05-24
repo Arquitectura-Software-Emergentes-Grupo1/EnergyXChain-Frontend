@@ -19,6 +19,10 @@ import 'primeflex/primeflex.css'
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Button from 'primevue/button';
+import Chart from 'primevue/chart';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -44,7 +48,10 @@ app.use(
   )
 app.use(MotionPlugin)
 app.use(createPinia())
-app.use(PrimeVue)
 app.use(router)
-
+app.use(PrimeVue)
+app.component('DataTable', DataTable)
+app.component('Column', Column)
+app.component('Button', Button)
+app.component('Chart', Chart)
 app.mount('#app')
