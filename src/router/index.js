@@ -21,6 +21,12 @@ const router = createRouter({
     },
     {
       path: '/pagos', name: 'pagos', component: () => import('../views/pagos.vue'),  meta: { requiresAuth: true }
+    },
+    {
+      path: '/pagar', name: 'pagar', component: () => import('../views/pagar.vue'),  meta: { requiresAuth: true }
+    },
+    {
+      path: '/proveedor/:id', name: 'proveedor-detail', component: () => import('../views/proveedorInfo.vue'),  meta: { requiresAuth: true }
     }
   ]
 })
