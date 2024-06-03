@@ -185,6 +185,8 @@
 
       const showMore = (id) => {
         console.log('Ver más', id);
+        router.push({ name: 'proveedor-detail', params: { id } });
+
       };
   
       return { userData, logout, columns, products, showMore, chartData, chartOptions, setChartData, setChartOptions, chartData2, chartOptions2, setChartData2, setChartOptions2};

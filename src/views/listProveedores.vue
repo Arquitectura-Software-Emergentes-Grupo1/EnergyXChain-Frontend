@@ -78,6 +78,8 @@ export default {
 
       const showMore = (id) => {
         console.log('Ver más', id);
+        router.push({ name: 'proveedor-detail', params: { id } });
+
       };
       
   
