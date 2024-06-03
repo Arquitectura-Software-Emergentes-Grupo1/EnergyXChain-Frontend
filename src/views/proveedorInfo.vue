@@ -10,7 +10,7 @@
       </div>
       <div class="proveedorCTA">
         <img src="../assets/img/proveedor.webp" style="border-radius: 50%; width: 250px;">
-        <Button @click="showMore()" label="Contratar" style="background-color: #024955; border: #024955; width: 70%;" raised />
+        <Button @click="hire()" label="Contratar" style="background-color: #024955; border: #024955; width: 70%;" raised />
       </div>
     </div>
     <div class="proveedorDesc">
@@ -63,11 +63,11 @@
           });
       };
 
-      const showMore = (id) => {
-        console.log('Ver más', id);
+      const hire = () => {
+        router.push({ name: 'pagar' });
       };
   
-      return { userData, logout, showMore, proveedorData};
+      return { userData, logout, hire, proveedorData};
     }
   }
   </script>
