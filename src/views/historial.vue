@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <h1>Lista de proveedores</h1>
+      <h1>Historial</h1>
         <div class="card">
             <DataTable :value="products" stripedRows paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
               <Column v-for="col of columns" :key="col.field" :field="col.field" :header="col.header"></Column>
