@@ -1,6 +1,6 @@
 <template>
   <div class="login-card">
-    <img id="logo" src="../../../src/assets/img/logo.png" alt="logo">
+    <img id="logo" src="../assets/img/logo.png" alt="logo">
     <div class="login-title">Iniciar sesión para acceder a EnergyXChain</div>
     <FloatLabel style="margin-bottom: 30px;">
       <InputText id="email" v-model="email" />
