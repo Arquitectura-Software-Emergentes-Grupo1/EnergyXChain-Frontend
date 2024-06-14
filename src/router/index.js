@@ -43,6 +43,14 @@ const router = createRouter({
     {
       path: '/nuevo-servicio', name: 'nuevo-servicio', component: () => import('../views/addServicio.vue'),  meta: { requiresAuth: true }
     },
+
+    //Views of Suppliers
+    {
+      path: '/my-clients', name: 'my-clients', component: () => import('../views/myClients.vue')
+    },
+    {
+      path: '/client-info', name: 'client-info', component: () => import('../views/clientInfo.vue')
+    }
   ]
 })
 

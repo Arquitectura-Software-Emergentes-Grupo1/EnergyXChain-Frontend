@@ -15,7 +15,11 @@
       <label for="age" class="input-label">Edad</label>
     </FloatLabel>
     <FloatLabel style="margin-bottom: 30px;">
-      <InputText id="typeUser" v-model="typeUser" />
+      <select id="typeUser" v-model="typeUser" class="input-select">
+        <option value="" disabled>Seleccione Tipo de Usuario</option>
+        <option value="cliente">Cliente</option>
+        <option value="proveedor">Proveedor</option>
+      </select>
       <label for="typeUser" class="input-label">Tipo de Usuario</label>
     </FloatLabel>
     <FloatLabel style="margin-bottom: 30px;">
