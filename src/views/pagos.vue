@@ -6,7 +6,7 @@
       <div class="sectionPagos">
         <button @click="pagos = true" :class=" pagos ? 'blue' : 'noblue'" >Mis Pagos</button>
         <p>|</p>
-        <button @click="pagos = false" :class=" !pagos ? 'blue' : 'noblue'">Pendinetes</button>
+        <button @click="pagos = false" :class=" !pagos ? 'blue' : 'noblue'">Pendientes</button>
       </div>
       <misPagos v-if="pagos"></misPagos>
 
