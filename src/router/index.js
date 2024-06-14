@@ -46,10 +46,10 @@ const router = createRouter({
 
     //Views of Suppliers
     {
-      path: '/my-clients', name: 'my-clients', component: () => import('../views/myClients.vue')
+      path: '/my-clients', name: 'my-clients', component: () => import('../views/myClients.vue'),  meta: { requiresAuth: true }
     },
     {
-      path: '/client-info', name: 'client-info', component: () => import('../views/clientInfo.vue')
+      path: '/client-info/:id', name: 'client-info', component: () => import('../views/clientInfo.vue'),  meta: { requiresAuth: true }
     }
   ]
 })

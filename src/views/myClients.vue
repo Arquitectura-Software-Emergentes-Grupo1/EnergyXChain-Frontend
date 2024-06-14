@@ -72,7 +72,7 @@
       };
   
       const showMore = (id) => {
-        router.push({ name: 'clientInfo', params: { id } });
+        router.push({ name: 'client-info', params: { id } });
       };
   
       return { logout, showMore, columns, clients, router };
