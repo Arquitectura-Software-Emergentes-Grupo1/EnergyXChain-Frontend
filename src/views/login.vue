@@ -41,6 +41,7 @@ export default {
       signInWithEmailAndPassword(getAuth(), email.value, password.value)
         .then((userCredential) => {
           const user = userCredential.user;
+          console.log("USER logged in: ", user)
 
           // Create a user data object to store in localStorage
           const userData = {

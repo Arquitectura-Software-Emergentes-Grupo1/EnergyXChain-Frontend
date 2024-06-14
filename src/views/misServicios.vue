@@ -6,12 +6,15 @@
               <Column v-for="col of columns" :key="col.field" :field="col.field" :header="col.header"></Column>
               <Column header="Acción">
                 <template #body="slotProps">
-                    <Button @click="showMore(slotProps.data.id)" label="Ver más" style="background-color: #024955; border: #024955;" raised />
-                    <Button @click="showMore(slotProps.data.id)" label="Eliminar" style="background-color: #024955; border: #024955; margin-left: 1rem;" raised />
+                    <Button @click="showMore(slotProps.data.id)" label="Eliminar" style="background-color: #024955; border: #024955;" raised />
                 </template>
               </Column>
             </DataTable>
+            <div style="width: 100%; display: flex; justify-content: center; margin-top: 1rem;">
+              <Button @click="addService()" label="Crear Servicio" style="background-color: #024955; border: #024955; padding: 1rem;" raised />
+            </div>
         </div>
+
       <button class="logout-button" @click="logout()">Log Out</button>
   
     </div>
@@ -78,9 +81,11 @@ export default {
         router.push({ name: 'proveedor-detail', params: { id } });
 
       };
-      
+      const addService = () => {
+        router.push({ name: 'nuevo-servicio' });
+      };
   
-      return { logout, showMore, columns, products, router};
+      return { logout, showMore, addService, columns, products, router};
     }
 }
 </script>

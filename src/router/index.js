@@ -35,10 +35,13 @@ const router = createRouter({
       path: '/proveedor/:id', name: 'proveedor-detail', component: () => import('../views/proveedorInfo.vue'),  meta: { requiresAuth: true }
     },
     {
-      path: '/homeProveedor', name: 'home', component: () => import('../views/homeProveedor.vue'),  meta: { requiresAuth: true }
+      path: '/homeProveedor', name: 'homeProveedor', component: () => import('../views/homeProveedor.vue'),  meta: { requiresAuth: true }
     },
     {
       path: '/servicios', name: 'servicios', component: () => import('../views/misServicios.vue'),  meta: { requiresAuth: true }
+    },
+    {
+      path: '/nuevo-servicio', name: 'nuevo-servicio', component: () => import('../views/addServicio.vue'),  meta: { requiresAuth: true }
     },
   ]
 })
