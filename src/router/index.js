@@ -51,6 +51,10 @@ const router = createRouter({
     {
       path: '/client-info/:id', name: 'client-info', component: () => import('../views/clientInfo.vue'),  meta: { requiresAuth: true }
     }
+    ,
+    {
+      path: '/ganancias', name: 'Ganancias', component: () => import('../views/gananciasProvedor.vue'),  meta: { requiresAuth: true }
+    }
   ]
 })
 
