@@ -32,6 +32,7 @@ import { useRouter } from 'vue-router';
 import InputText from 'primevue/inputtext';
 import FloatLabel from 'primevue/floatlabel';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { API_BASE_URL } from '@/config';
 
 export default {
   components: {
@@ -51,7 +52,19 @@ export default {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log("USER logged in: ", user)
-
+          const fetchData = async () => {
+            try {
+              const response = await fetch(`${API_BASE_URL}customer`);
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              const jsonData = await response.json();
+              data.value = jsonData;
+              console.log("DATA: ", data.value)
+            } catch (err) {
+            } finally {
+            }
+          };
           // Create a user data object to store in localStorage
           const userData = {
             uid: user.uid,
@@ -66,6 +79,10 @@ export default {
 
           // Redirect to the home page
           router.push('/home');
+          if(typeUser.value === 'proveedor'){
+            fetchData();
+            router.push('/homeProveedor');
+          }
         })
         .catch((e) => {
           isError.value = true;

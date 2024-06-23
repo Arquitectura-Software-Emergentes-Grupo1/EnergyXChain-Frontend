@@ -51,7 +51,7 @@ import { useRouter } from 'vue-router';
 
 // Models
 import user from '../models/user.js';
-
+import { API_BASE_URL } from '@/config';
 export default {
   components: {
     InputText,
@@ -85,14 +85,14 @@ export default {
       return !isError.value && !privacyTermsError.value;
     };
 
-    const register = () => {
+    const register = async () => {
       // Validar todos los campos antes de registrar al usuario
       if (!validateForm()) {
         return;
       }
 
       createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-        .then((userCredential) => {
+        .then( async (userCredential) => {
           const uid = userCredential.user.uid;
           
           user.uid = uid;
@@ -101,7 +101,22 @@ export default {
           user.age = age.value;
           user.typeUser = typeUser.value;
           user.email = email.value;
-
+         
+          const res = await fetch(`${API_BASE_URL}supplier`, { // Usa la URL base
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+              email: user.email,
+              password: password.value,
+              name: user.name,
+              description: "Prueba",
+              phone: user.phoneNumber,
+              }) 
+          });
+          console.log(res, "creado")
+             
           // Local Storage
           localStorage.setItem('userData', JSON.stringify(user));
           console.log(user);
