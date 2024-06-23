@@ -10,6 +10,14 @@
       <InputText id="password" v-model="password" :type="'password'" />
       <label for="password" class="input-label">Contraseña</label>
     </FloatLabel>
+    <label for="typeUser" class="input-label">Tipo de Usuario</label>
+    <FloatLabel style="margin-bottom: 30px;">
+      <select id="typeUser" v-model="typeUser" class="input-select">
+        <option value="" disabled>Seleccione Tipo de Usuario</option>
+        <option value="cliente">Cliente</option>
+        <option value="proveedor">Proveedor</option>
+      </select>
+    </FloatLabel>
     <div class="forgot-password" style="margin-bottom: 10px;">¿Olvidó la contraseña? <RouterLink to="/forgot-password" style="color: #024955">Cambiar contraseña</RouterLink></div>
     <button class="login-button" style="margin-bottom: 25px;" @click="login()">Iniciar Sesión</button>
     <div class="register">¿Sin registrarte aún? <RouterLink to="/register" style="color: #024955">Registrar</RouterLink></div>
@@ -36,6 +44,7 @@ export default {
     const password = ref('');
     const errorMessage = ref('');
     const isError = ref(false);
+    const typeUser = ref('');
 
     const login = () => {
       signInWithEmailAndPassword(getAuth(), email.value, password.value)
@@ -77,7 +86,7 @@ export default {
         });
     };
 
-    return { email, password, login, errorMessage, isError };
+    return { email, password,typeUser, login, errorMessage, isError };
   }
 }
 </script>
