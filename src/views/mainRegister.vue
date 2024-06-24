@@ -19,6 +19,7 @@
   // Models
   import user from '../models/user.js';
   import { API_BASE_URL } from '@/config';
+
   export default {
     components: {
       InputText,

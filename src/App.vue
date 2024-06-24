@@ -8,7 +8,7 @@ import NavbarClient from './components/navbarClient.vue'
 const route = useRoute();
 
 const showNavbarLogin = computed(() => {
-  return route.path === '/' || route.path === '/register';
+  return route.path === '/' || route.path === '/main-register';
 });
 </script>
 
