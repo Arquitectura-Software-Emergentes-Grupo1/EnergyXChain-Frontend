@@ -7,8 +7,8 @@
         <label for="name" class="input-label">Nombres</label>
       </FloatLabel>
       <FloatLabel style="margin-bottom: 30px;">
-        <InputText id="phoneNumber" v-model="phoneNumber" />
-        <label for="phoneNumber" class="input-label">Número Telefónico</label>
+        <InputText id="phone" v-model="phone" />
+        <label for="phone" class="input-label">Número Telefónico</label>
       </FloatLabel>
       <FloatLabel style="margin-bottom: 30px;">
         <InputText id="age" v-model="age" />
@@ -46,9 +46,10 @@
   // Models
   import user from '../models/user.js';
 
-  import customer from '../models/customer.js';
+ 
 
   import { API_BASE_URL } from '@/config';
+  import Customer from '../models/customer.js';
 
   export default {
     components: {
@@ -58,20 +59,24 @@
     },
     setup() {
       const router = useRouter();
+      const id = ref(null);
       const name = ref('');
-      const phoneNumber = ref('');
+      const phone = ref('');
       const age = ref('');
       const email = ref('');
       const password = ref('');
+      const sales = ref([]);
       const privacyTerms = ref(false);
       const isError = ref(false);
       const privacyTermsError = ref(false);
+
+      const customer = new Customer(id, email, name, phone, age, sales);
   
       const validateForm = () => {
         isError.value = false;
         privacyTermsError.value = false;
   
-        if ( !name.value || !phoneNumber.value || !age.value || !email.value || !password.value) {
+        if ( !name.value || !phone.value || !age.value || !email.value || !password.value) {
           isError.value = true;
         }
   
@@ -92,9 +97,9 @@
           .then( async (userCredential) => {
             const uid = userCredential.user.uid;
             
-            customer.id = uid;
+            customer.id = 0;
             customer.name = name.value;
-            customer.phoneNumber = phoneNumber.value;
+            customer.phone = phone.value;
             customer.age = age.value;
             customer.email = email.value;
             customer.sales = [];
@@ -105,10 +110,10 @@
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({ 
-                id: customer.uid,
+                //id: customer.uid,
                 email: customer.email,
                 name: customer.name,
-                phoneNumber: customer.phoneNumber,
+                phone: customer.phone,
                 age: customer.age,
                 sales: customer.sales
 
@@ -131,7 +136,7 @@
           });
       };
   
-      return { name, phoneNumber, age, email, password, privacyTerms, register, isError, privacyTermsError };
+      return { name, phone, age, email, password, privacyTerms, register, isError, privacyTermsError , sales,id, customer};
     }
   }
   </script>

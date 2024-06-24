@@ -7,8 +7,8 @@
         <label for="name" class="input-label">Nombres</label>
       </FloatLabel>
       <FloatLabel style="margin-bottom: 30px;">
-        <InputText id="phoneNumber" v-model="phoneNumber" />
-        <label for="phoneNumber" class="input-label">Número Telefónico</label>
+        <InputText id="phone" v-model="phone" />
+        <label for="phone" class="input-label">Número Telefónico</label>
       </FloatLabel>
       <FloatLabel style="margin-bottom: 30px;">
         <InputText id="description" v-model="description" />
@@ -44,8 +44,8 @@
   
   // Models
   import user from '../models/user.js';
-  import supplier from '@/models/supplier.js';
   import { API_BASE_URL } from '@/config';
+import Supplier from '../models/supplier.js';
   export default {
     components: {
       InputText,
@@ -54,20 +54,24 @@
     },
     setup() {
       const router = useRouter();
+      const id = ref(null);
       const name = ref('');
-      const phoneNumber = ref('');
+      const phone = ref('');
       const description = ref('');
       const email = ref('');
       const password = ref('');
+      const plans = ref([]);
       const privacyTerms = ref(false);
       const isError = ref(false);
       const privacyTermsError = ref(false);
+
+      const supplier = new Supplier(id, email, name, phone, description, plans);
   
       const validateForm = () => {
         isError.value = false;
         privacyTermsError.value = false;
   
-        if (!name.value || !phoneNumber.value || !description.value || !email.value || !password.value) {
+        if (!name.value || !phone.value || !description.value || !email.value || !password.value) {
           isError.value = true;
         }
   
@@ -88,9 +92,9 @@
           .then( async (userCredential) => {
             const uid = userCredential.user.uid;
             
-            supplier.id = uid;
+            supplier.id = 0;
             supplier.name = name.value;
-            supplier.phoneNumber = phoneNumber.value;
+            supplier.phone = phone.value;
             supplier.description = description.value;
             supplier.email = email.value;
             supplier.plans = [];
@@ -104,7 +108,7 @@
               body: JSON.stringify({ 
                 id: supplier.uid,
                 name: supplier.name,
-                phoneNumber: supplier.phoneNumber,
+                phone: supplier.phone,
                 description: supplier.description,
                 email: supplier.email,
                 plans: supplier.plans
@@ -127,7 +131,7 @@
           });
       };
   
-      return { name, phoneNumber, description, email, password, privacyTerms, register, isError, privacyTermsError };
+      return { name, phone, description, email, password, privacyTerms, register, isError, privacyTermsError,id,plans, supplier };
     }
   }
   </script>

@@ -1,12 +1,14 @@
 class Supplier {
-    constructor(id, email, name, description, phone, plans) {
+    constructor(id, email, name, phone, description, plans) {
         this.id = id;
         this.email = email;
         this.name = name;
-        this.description = description;
         this.phone = phone;
+        this.description = description;
         this.plans = plans;
     }
+
+   
 }
 
 export default Supplier;
