@@ -93,6 +93,7 @@
             supplier.phoneNumber = phoneNumber.value;
             supplier.description = description.value;
             supplier.email = email.value;
+            supplier.plans = [];
 
            
             const res = await fetch(`${API_BASE_URL}supplier`, { // Usa la URL base
@@ -105,16 +106,17 @@
                 name: supplier.name,
                 phoneNumber: supplier.phoneNumber,
                 description: supplier.description,
-                email: supplier.email
+                email: supplier.email,
+                plans: supplier.plans
                 }) 
             });
             console.log(res, "Supplier creado satisfactoriamente")
                
             // Local Storage
-            localStorage.setItem('userData', JSON.stringify(user));
-            console.log(user);
+            localStorage.setItem('userData', JSON.stringify(supplier));
+            console.log(supplier);
   
-            console.log('Usuario registrado', userCredential.user.uid);
+            console.log('Usuario registrado', userCredential.supplier.uid);
   
             router.push('/home');
           })
