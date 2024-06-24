@@ -97,6 +97,7 @@
             customer.phoneNumber = phoneNumber.value;
             customer.age = age.value;
             customer.email = email.value;
+            customer.sales = [];
            
             const res = await fetch(`${API_BASE_URL}customer`, { // Usa la URL base
               method: 'POST',
@@ -108,16 +109,18 @@
                 email: customer.email,
                 name: customer.name,
                 phoneNumber: customer.phoneNumber,
-                age: customer.age
+                age: customer.age,
+                sales: customer.sales
+
                 }) 
             });
             console.log(res, "Customer creado")
                
             // Local Storage
-            localStorage.setItem('userData', JSON.stringify(user));
-            console.log(user);
+            localStorage.setItem('userData', JSON.stringify(customer));
+            console.log(customer);
   
-            console.log('Usuario registrado', userCredential.user.uid);
+            console.log('Usuario registrado', userCredential.customer.uid);
   
             router.push('/home');
           })
