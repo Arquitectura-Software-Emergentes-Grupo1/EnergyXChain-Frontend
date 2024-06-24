@@ -92,7 +92,7 @@
           .then( async (userCredential) => {
             const uid = userCredential.user.uid;
             
-            customer.uid = uid;
+            customer.id = uid;
             customer.name = name.value;
             customer.phoneNumber = phoneNumber.value;
             customer.age = age.value;
@@ -104,7 +104,7 @@
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({ 
-                uid: customer.uid,
+                id: customer.uid,
                 email: customer.email,
                 name: customer.name,
                 phoneNumber: customer.phoneNumber,
