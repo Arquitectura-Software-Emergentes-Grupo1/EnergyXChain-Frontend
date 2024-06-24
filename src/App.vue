@@ -13,6 +13,7 @@ const showNavbarLogin = computed(() => {
 </script>
 
 <template>
+
   <header>
     <navbarLogin v-if="showNavbarLogin"></navbarLogin >
     <navbarClient v-else></navbarClient >

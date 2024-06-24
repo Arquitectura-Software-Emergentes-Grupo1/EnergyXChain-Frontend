@@ -7,7 +7,7 @@
                 </div>
                 <ul class="nav-links">
                     <li><router-link to="/">Iniciar Sesión</router-link></li>
-                    <li><router-link to="/register">Registrarse</router-link></li>
+                    <li><router-link to="/main-register">Registrarse</router-link></li>
                 </ul>
             </div>
         </nav>

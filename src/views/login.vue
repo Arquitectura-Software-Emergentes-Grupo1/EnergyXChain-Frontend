@@ -20,7 +20,7 @@
     </FloatLabel>
     <div class="forgot-password" style="margin-bottom: 10px;">¿Olvidó la contraseña? <RouterLink to="/forgot-password" style="color: #024955">Cambiar contraseña</RouterLink></div>
     <button class="login-button" style="margin-bottom: 25px;" @click="login()">Iniciar Sesión</button>
-    <div class="register">¿Sin registrarte aún? <RouterLink to="/register" style="color: #024955">Registrar</RouterLink></div>
+    <div class="register">¿Sin registrarte aún? <RouterLink to="/main-register" style="color: #024955">Registrar</RouterLink></div>
 
     <p v-if="isError" style="color: red;">{{ errorMessage }}</p>
   </div>
