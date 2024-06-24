@@ -134,7 +134,6 @@
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
           });
-          router.push('/home'); 
       };
   
       return { name, phone, age, email, password, privacyTerms, register, isError, privacyTermsError , sales,id, customer};
