@@ -32,6 +32,9 @@ const router = createRouter({
       path: '/perfil', name: 'perfil', component: () => import('../views/perfil.vue'),  meta: { requiresAuth: true }
     },
     {
+      path: 'profile-supplier', name: 'profile-supplier', component: () => import('../views/profileSupplier.vue'),  meta: { requiresAuth: true }
+    },
+    {
       path: '/pagos', name: 'pagos', component: () => import('../views/pagos.vue'),  meta: { requiresAuth: true }
     },
     {
