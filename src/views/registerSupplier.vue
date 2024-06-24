@@ -55,6 +55,7 @@ import Supplier from '../models/supplier.js';
     setup() {
       const router = useRouter();
       const id = ref(null);
+      const uid = ref('');
       const name = ref('');
       const phone = ref('');
       const description = ref('');
@@ -65,7 +66,7 @@ import Supplier from '../models/supplier.js';
       const isError = ref(false);
       const privacyTermsError = ref(false);
 
-      const supplier = new Supplier(id, email, name, phone, description, plans);
+      const supplier = new Supplier(id, uid, email, name, phone, description, plans);
   
       const validateForm = () => {
         isError.value = false;
@@ -93,6 +94,7 @@ import Supplier from '../models/supplier.js';
             const uid = userCredential.user.uid;
             
             supplier.id = 0;
+            supplier.uid = uid;
             supplier.name = name.value;
             supplier.phone = phone.value;
             supplier.description = description.value;
@@ -106,7 +108,8 @@ import Supplier from '../models/supplier.js';
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({ 
-                id: supplier.uid,
+                //id: supplier.uid,
+                uid: supplier.uid,
                 name: supplier.name,
                 phone: supplier.phone,
                 description: supplier.description,
@@ -132,7 +135,7 @@ import Supplier from '../models/supplier.js';
 
       };
   
-      return { name, phone, description, email, password, privacyTerms, register, isError, privacyTermsError,id,plans, supplier };
+      return { name, phone, description, email, password, privacyTerms, register, isError, privacyTermsError,id,plans, supplier , uid};
     }
   }
   </script>

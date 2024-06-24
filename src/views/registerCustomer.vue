@@ -60,6 +60,7 @@
     setup() {
       const router = useRouter();
       const id = ref(null);
+      const uid = ref('');
       const name = ref('');
       const phone = ref('');
       const age = ref('');
@@ -70,7 +71,7 @@
       const isError = ref(false);
       const privacyTermsError = ref(false);
 
-      const customer = new Customer(id, email, name, phone, age, sales);
+      const customer = new Customer(id, uid, email, name, phone, age, sales);
   
       const validateForm = () => {
         isError.value = false;
@@ -98,6 +99,7 @@
             const uid = userCredential.user.uid;
             
             customer.id = 0;
+            customer.uid = uid;
             customer.name = name.value;
             customer.phone = phone.value;
             customer.age = age.value;
@@ -111,6 +113,7 @@
               },
               body: JSON.stringify({ 
                 //id: customer.uid,
+                uid: customer.uid,
                 email: customer.email,
                 name: customer.name,
                 phone: customer.phone,
@@ -136,7 +139,7 @@
           });
       };
   
-      return { name, phone, age, email, password, privacyTerms, register, isError, privacyTermsError , sales,id, customer};
+      return { name, phone, age, email, password, privacyTerms, register, isError, privacyTermsError , sales,id, customer, uid};
     }
   }
   </script>
