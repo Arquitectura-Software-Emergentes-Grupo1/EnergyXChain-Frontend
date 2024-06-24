@@ -132,7 +132,7 @@ import Supplier from '../models/supplier.js';
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
           });
-
+          router.push('/home');
       };
   
       return { name, phone, description, email, password, privacyTerms, register, isError, privacyTermsError,id,plans, supplier , uid};
