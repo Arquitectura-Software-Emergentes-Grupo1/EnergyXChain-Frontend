@@ -61,10 +61,11 @@ const products = ref([
 
 const fetchData = async () => {
   try {
-      const response = await fetch(`${API_BASE_URL}supplier`,{
+      const response = await fetch(`https://82af-2001-1388-1b8e-d44c-4d2d-93a1-3ea7-e763.ngrok-free.app/api/v0/supplier`,{
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': true
         }
       
       });
