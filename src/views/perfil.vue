@@ -20,10 +20,17 @@
   import { useRouter } from 'vue-router';
   import { ref, onMounted } from 'vue';
   import { API_BASE_URL } from '@/config';
-  
+  import { useGlobalStore } from '@/stores/globalStore';
+  import { computed } from 'vue';
   export default {
     
     setup() {
+      const globalStore = useGlobalStore();
+      const sharedVariable = computed(() => globalStore.sharedVariable);
+
+      const userLogout = () => {
+          globalStore.setSharedVariable('login');
+      };
       const router = useRouter();
       const customerData = ref(null);
       const auth = getAuth();
@@ -66,6 +73,7 @@
           .then(() => {
             console.log('Usuario deslogueado');
             localStorage.removeItem('userData');
+            userLogout();
             router.push('/');
           })
           .catch((error) => {

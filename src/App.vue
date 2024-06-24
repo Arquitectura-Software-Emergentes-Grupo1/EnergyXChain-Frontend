@@ -4,19 +4,30 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import NavbarLogin from './components/navbarLogin.vue'
 import NavbarClient from './components/navbarClient.vue'
+import { useGlobalStore } from '@/stores/globalStore';
 
 const route = useRoute();
+const globalStore = useGlobalStore();
+const sharedVariable = computed(() => globalStore.sharedVariable);
+
 
 const showNavbarLogin = computed(() => {
   return route.path === '/' || route.path === '/main-register';
+});
+const showNavbarClient = computed(() => {
+  return route.path === '/proveedores' || route.path === '/historial' || route.path === '/pagar' || route.path === '/proveedorInfo' || route.path === '/home' || route.path === '/pagos' || route.path === '/pagar' || route.path === '/proveedor/id';
+});
+const showNavbarSupplier = computed(() => {
+  return route.path === '/homeProveedor' || route.path === '/servicios' || route.path === '/nuevo-servicio' || route.path === '/my-clients' || route.path === '/client-info/:id' || route.path === '/ganancias';
 });
 </script>
 
 <template>
 
   <header>
-    <navbarLogin v-if="showNavbarLogin"></navbarLogin >
-    <navbarClient v-else></navbarClient >
+    <navbarLogin v-if="sharedVariable == 'login'"></navbarLogin >
+    <navbarClient v-if="sharedVariable == 'client'"></navbarClient >
+      <p v-if="sharedVariable == 'supplier'">HASHHASHHAS</p>
   </header>
 
   <body>

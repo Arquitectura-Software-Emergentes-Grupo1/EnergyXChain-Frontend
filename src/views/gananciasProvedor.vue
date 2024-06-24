@@ -21,7 +21,8 @@
 import { getAuth, signOut } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
-
+import { useGlobalStore } from '@/stores/globalStore';
+import { computed } from 'vue';
 
 const pagos = ref(true);
 const chartData = ref();
@@ -30,6 +31,12 @@ const chartOptions = ref();
 export default {
   
   setup() {
+      const globalStore = useGlobalStore();
+      const sharedVariable = computed(() => globalStore.sharedVariable);
+
+      const userLogout = () => {
+          globalStore.setSharedVariable('login');
+      };
       onMounted(() => {
             chartData.value = setChartData();
             chartOptions.value = setChartOptions();
@@ -137,6 +144,7 @@ export default {
           .then(() => {
             console.log('Usuario deslogueado');
             localStorage.removeItem('userData');
+            userLogout();
             router.push('/');
           })
           .catch((error) => {

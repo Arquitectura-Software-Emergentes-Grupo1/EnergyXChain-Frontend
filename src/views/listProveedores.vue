@@ -20,7 +20,8 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { getAuth, signOut } from 'firebase/auth';
 import { API_BASE_URL } from '@/config';
-
+import { useGlobalStore } from '@/stores/globalStore';
+import { computed } from 'vue';
 const router = useRouter();
 
 const data = ref(null);
@@ -32,6 +33,12 @@ const columns = [
   { field: 'precio', header: 'Precio' },
   { field: 'description', header: 'Descripción' },
 ];
+const globalStore = useGlobalStore();
+const sharedVariable = computed(() => globalStore.sharedVariable);
+
+const userLogout = () => {
+    globalStore.setSharedVariable('login');
+};
 const products = ref([
   {
     id: 1,
@@ -92,6 +99,7 @@ const logout = () => {
       .then(() => {
           console.log('Usuario deslogueado');
           localStorage.removeItem('userData');
+          userLogout();
           router.push('/');
       })
       .catch((error) => {
