@@ -32,6 +32,9 @@ import { useRouter } from 'vue-router';
 import InputText from 'primevue/inputtext';
 import FloatLabel from 'primevue/floatlabel';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { useGlobalStore } from '@/stores/globalStore';
+import { computed } from 'vue';
+
 
 export default {
   components: {
@@ -39,6 +42,16 @@ export default {
     FloatLabel
   },
   setup() {
+    const globalStore = useGlobalStore();
+    const sharedVariable = computed(() => globalStore.sharedVariable);
+
+    const clientLogged = () => {
+        globalStore.setSharedVariable('client');
+    };
+    const supplierLogged = () => {
+        globalStore.setSharedVariable('supplier');
+    };
+
     const router = useRouter();
     const email = ref('');
     const password = ref('');
@@ -65,7 +78,14 @@ export default {
           localStorage.setItem('userData', JSON.stringify(userData));
 
           // Redirect to the home page
-          router.push('/home');
+          if(typeUser.value == 'cliente') {
+            clientLogged();
+            router.push('/home');
+          }
+          else if(typeUser.value == 'proveedor') {
+            supplierLogged();
+            router.push('/homeProveedor');
+          }
         })
         .catch((e) => {
           isError.value = true;

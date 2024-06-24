@@ -36,10 +36,18 @@
   import { getAuth, signOut } from 'firebase/auth';
   import { useRouter } from 'vue-router';
   import { ref, onMounted } from 'vue';
+  import { useGlobalStore } from '@/stores/globalStore';
+  import { computed } from 'vue';
 
   export default {
     
     setup() {
+      const globalStore = useGlobalStore();
+      const sharedVariable = computed(() => globalStore.sharedVariable);
+
+      const userLogout = () => {
+          globalStore.setSharedVariable('login');
+      };
       const router = useRouter();
       const userData = ref(null);
       const creditCard = ref(null);
@@ -64,6 +72,7 @@
           .then(() => {
             console.log('Usuario deslogueado');
             localStorage.removeItem('userData');
+            userLogut();
             router.push('/');
           })
           .catch((error) => {
