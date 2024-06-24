@@ -1,12 +1,11 @@
 <template>
   <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-    <div v-if="userData">
-      <p><strong>uId:</strong>{{ userData.uid }}</p>
-      <p><strong>Nombre:</strong> {{ userData.name }}</p>
-      <p><strong>Teléfono:</strong> {{ userData.phoneNumber }}</p>
-      <p><strong>Email:</strong> {{ userData.email }}</p>
-      <p><strong>Edad:</strong> {{ userData.age }}</p>
-      <p><strong>Tipo de usuario:</strong> {{ userData.typeUser }}</p>
+    <div v-if="customerData">
+      <p><strong>uId:</strong>{{ customerData.uid }}</p>
+      <p><strong>Nombre:</strong> {{ customerData.name }}</p>
+      <p><strong>Teléfono:</strong> {{ customerData.phone }}</p>
+      <p><strong>Email:</strong> {{ customerData.email }}</p>
+      <p><strong>Edad:</strong> {{ customerData.age }}</p>
 
       <button class="logout-button" @click="logout()">Log Out</button>
     </div>
@@ -20,17 +19,43 @@
   import { getAuth, signOut } from 'firebase/auth';
   import { useRouter } from 'vue-router';
   import { ref, onMounted } from 'vue';
-
+  import { API_BASE_URL } from '@/config';
+  
   export default {
     
     setup() {
       const router = useRouter();
-      const userData = ref(null);
+      const customerData = ref(null);
+      const auth = getAuth();
+      const user = ref(auth.currentUser);
+
+      const fetchCustomerData = async (uid) => {
+        try {
+          const response = await fetch(`${API_BASE_URL}api/v0/customer/uid=${uid}`,{
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': true
+            }
+          
+          });
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const jsonData = await response.json();
+          customerData.value = jsonData;
+        } catch (error) {
+          console.error('Error fetching customer data:', error);
+          
+        }
+      };
+
       
       onMounted(() => {
         const storedUserData = JSON.parse(localStorage.getItem('userData'));
         if (storedUserData) {
-          userData.value = storedUserData;
+          //userData.value = storedUserData;
+          fetchCustomerData(storedUserData.uid); 
         } else {
           router.push('/');
         }
@@ -50,7 +75,7 @@
 
      
   
-      return { userData, logout };
+      return { user,customerData, logout };
     }
   }
   </script>

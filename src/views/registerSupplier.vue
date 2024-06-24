@@ -102,7 +102,7 @@ import Supplier from '../models/supplier.js';
             supplier.plans = [];
 
            
-            const res = await fetch(`${API_BASE_URL}supplier`, { // Usa la URL base
+            const res = await fetch(`${API_BASE_URL}api/v0/supplier`, { // Usa la URL base
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'

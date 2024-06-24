@@ -106,7 +106,7 @@
             customer.email = email.value;
             customer.sales = [];
            
-            const res = await fetch(`${API_BASE_URL}customer`, { // Usa la URL base
+            const res = await fetch(`${API_BASE_URL}api/v0/customer`, { // Usa la URL base
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
