@@ -11,7 +11,7 @@
       <label for="description" class="input-label">Descripción</label>
     </FloatLabel>
     <FloatLabel style="margin-bottom: 30px;">
-      <InputText id="price" v-model="price" />
+      <InputNumber class="custom-input" id="price" v-model="price" :minFractionDigits="2"/>
       <label for="price" class="input-label">Precio</label>
     </FloatLabel>
     
@@ -21,28 +21,30 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { ref, onMounted } from 'vue';
+import { getAuth } from 'firebase/auth';
+import { useRouter } from 'vue-router';
+import { API_BASE_URL } from '@/config';
+
 import InputText from 'primevue/inputtext';
 import FloatLabel from 'primevue/floatlabel';
-import Checkbox from 'primevue/checkbox';
-import { useRouter } from 'vue-router';
-
-// Models
-import user from '../models/user.js';
+import InputNumber from 'primevue/inputnumber';
 
 export default {
   components: {
     InputText,
-    FloatLabel, 
-    Checkbox
+    FloatLabel,
+    InputNumber
   },
   setup() {
     const router = useRouter();
+    const auth = getAuth();
+    const user = auth.currentUser;
     const name = ref('');
     const description = ref('');
-    const price = ref('');
+    const price = ref(0); // Inicializar price como número
     const isError = ref(false);
+    const supplierData = ref(null);
 
     const validateForm = () => {
       isError.value = false;
@@ -54,24 +56,93 @@ export default {
       return !isError.value;
     };
 
-    const create = () => {
-      // Validar todos los campos antes de registrar al usuario
+    const create = async () => {
       if (!validateForm()) {
         console.log('Error en el formulario')
         return;
       }
 
-      //LLAMAR SERVICIO CREACIÓN
+      const uid = user.uid;
 
-      router.push('/servicios');
+      try {
+        const response = await fetch(`${API_BASE_URL}api/v0/supplier/uid=${uid}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al obtener los datos del proveedor');
+        }
+
+        const jsonData = await response.json();
+        supplierData.value = jsonData;
+
+        
+        const requestBody = {
+          name: name.value,
+          description: description.value,
+          fee: parseFloat(price.value),
+          supplierId: supplierData.value.id, // Usar el id del proveedor obtenido
+        };
+
+        const createResponse = await fetch(`${API_BASE_URL}api/v0/plan`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          },
+          body: JSON.stringify(requestBody),
+        });
+
+        if (!createResponse.ok) {
+          throw new Error('Error al crear el servicio');
+        }
+
+        router.push('/servicios');
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    };
+
+    onMounted(async () => {
+     
+      await fetchSupplierData();
+    });
+
+    const fetchSupplierData = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}api/v0/supplier/uid=${uid}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al obtener los datos del proveedor');
+        }
+
+        const jsonData = await response.json();
+        supplierData.value = jsonData;
+      } catch (error) {
+        console.error('Error fetching supplier data:', error);
+      }
     };
 
     return { name, description, price, isError, create };
   }
-}
+};
 </script>
 
-<style>
+<style scoped>
+.custom-input {
+  width: 96%;
+}
+
 .register-card {
   background-color: #C3EDF5;
   border-radius: 14px;
@@ -109,5 +180,4 @@ export default {
   width: 97%;
   margin: 0 auto;
 }
-
 </style>

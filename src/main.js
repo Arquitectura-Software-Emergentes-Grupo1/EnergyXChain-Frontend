@@ -23,7 +23,8 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Chart from 'primevue/chart';
-import InputText from 'primevue/inputtext';
+import InputText from 'primevue/inputtext'; 
+import InputNumber from 'primevue/inputnumber';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -56,4 +57,5 @@ app.component('Column', Column)
 app.component('Button', Button)
 app.component('Chart', Chart)
 app.component('InputText', InputText)
+app.component('InputNumber', InputNumber)
 app.mount('#app')
