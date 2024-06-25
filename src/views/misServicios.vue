@@ -6,7 +6,7 @@
               <Column v-for="col of columns" :key="col.field" :field="col.field" :header="col.header"></Column>
               <Column header="Acción">
                 <template #body="slotProps">
-                    <Button @click="showMore(slotProps.data.id)" label="Eliminar" style="background-color: #024955; border: #024955;" raised />
+                    <Button @click="deletePlan(slotProps.data.id)" label="Eliminar" style="background-color: #024955; border: #024955;" raised />
                 </template>
               </Column>
             </DataTable>
@@ -87,9 +87,16 @@ globalStore.setSharedVariable('login');
           });
       };
 
-      const showMore = (id) => {
+      const deletePlan = async (id) => {
         console.log('Ver más', id);
-        router.push({ name: 'proveedor-detail', params: { id } });
+        const data = await fetch(`${API_BASE_URL}api/v0/plan/${id}`,{
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          }
+        });
+        console.log("RESPONSE", data)
 
       };
       const addService = () => {
@@ -129,7 +136,7 @@ globalStore.setSharedVariable('login');
         await getData()
 
       });
-      return { logout, showMore, addService, columns, products, router};
+      return { logout, deletePlan, addService, columns, products, router};
     },
     
 }
