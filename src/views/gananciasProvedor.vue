@@ -23,25 +23,58 @@ import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { useGlobalStore } from '@/stores/globalStore';
 import { computed } from 'vue';
+import { API_BASE_URL } from '@/config';
 
 const pagos = ref(true);
 const chartData = ref();
 const chartOptions = ref();
+
 
 export default {
   
   setup() {
       const globalStore = useGlobalStore();
       const sharedVariable = computed(() => globalStore.sharedVariable);
-
+      const user = JSON.parse(localStorage.getItem('userData'));
+      const userId = ref();
       const userLogout = () => {
           localStorage.setItem('typeUser', 'login');
-globalStore.setSharedVariable('login');
+          globalStore.setSharedVariable('login');
       };
-      onMounted(() => {
-            chartData.value = setChartData();
-            chartOptions.value = setChartOptions();
+      const getUserId = async () => {
+        const data = await fetch(`${API_BASE_URL}api/v0/supplier/uid=${user.uid}`,{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          }
         });
+        const jsonData = await data.json();
+
+        console.log("USERID",jsonData);
+        userId.value = jsonData.id;
+      }
+      const getData = async () => {
+        //hacer fetch a endpoint de get servicios
+        const data = await fetch(`${API_BASE_URL}api/v0/sale/supplier/${userId.value}`,{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          }
+        });
+        const jsonData = await data.json();
+
+        console.log("SERVICIOS DE SUPPLIER",jsonData);
+        products.value = jsonData;
+      }
+      
+      onMounted(async () => {
+        await getUserId()
+        await getData()
+        chartData.value = setChartData();
+        chartOptions.value = setChartOptions();
+      });
         
         
         const setChartData = () => {

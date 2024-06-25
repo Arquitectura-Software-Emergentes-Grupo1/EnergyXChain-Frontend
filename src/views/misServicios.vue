@@ -38,7 +38,7 @@ export default {
       const user = JSON.parse(localStorage.getItem('userData'));
       const userLogout = () => {
           localStorage.setItem('typeUser', 'login');
-globalStore.setSharedVariable('login');
+          globalStore.setSharedVariable('login');
       };
       const userId = ref();
       const router = useRouter();  
