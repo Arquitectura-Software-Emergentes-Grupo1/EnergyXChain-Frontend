@@ -14,15 +14,17 @@
 <script>
 
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { API_BASE_URL } from '@/config';
 
 export default {
   
     setup() {
       const router = useRouter();
-
+      const user = JSON.parse(localStorage.getItem('userData'));
+      const userId = ref();
       const products = ref([
-        {
+        /* {
           id: 1,
           supplier: 'Proveedor 1',
           companyName: 'Empresa 1',
@@ -45,7 +47,7 @@ export default {
           monto: 300,
           feVenci: '0/0/0',
           action: 'Acción 3'
-        },
+        }, */
       ]);
       const columns = [
           { field: 'supplier', header: 'Proveedor' },
@@ -59,7 +61,38 @@ export default {
       const showMore = (id) => {
         console.log('Ver más', id);
       };
-  
+      const getUserId = async () => {
+        const data = await fetch(`${API_BASE_URL}api/v0/customer/uid=${user.uid}`,{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          }
+        });
+        const jsonData = await data.json();
+
+        console.log("USERID",jsonData);
+        userId.value = jsonData.id;
+      }
+      const getData = async () => {
+        //hacer fetch a endpoint de get servicios
+        const data = await fetch(`${API_BASE_URL}api/v0/sale/customer/${userId.value}`,{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          }
+        });
+        const jsonData = await data.json();
+
+        console.log("PAGOS CLIENTE",jsonData);
+        products.value = jsonData;
+      }
+      
+      onMounted(async () => {
+        await getUserId()
+        await getData()
+      });
       return { router, columns, products, showMore};
   }
 }
