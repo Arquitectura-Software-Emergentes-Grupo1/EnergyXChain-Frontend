@@ -6,9 +6,10 @@
         <p><span style="font-weight: bold;">Nombre:</span> {{ planData.name }}</p>
         <p><span style="font-weight: bold;">Descripción:</span> {{ planData.description }}</p>
         <p><span style="font-weight: bold;">Tarifa:</span> {{ planData.fee }}</p>
-        <p><span style="font-weight: bold;">Proveedor:</span> {{ planData.supplier.name }}</p>
+        <!-- <p><span style="font-weight: bold;">Proveedor:</span> {{ planData.supplier.name }}</p> -->
+
       </div>
-      <div class="planCTA">
+      <div class="planCTA" style="display: flex; justify-content: center; align-items: center;">
         <!-- Aquí puedes agregar cualquier botón o acción relacionada con el plan -->
         <Button @click="hire()" label="Contratar" style="background-color: #024955; border: #024955; width: 70%;" raised />
       </div>
@@ -60,6 +61,7 @@ onMounted(async () => {
     }
     const jsonData = await response.json();
     planData.value = jsonData;
+    console.log('Plan data:', planData);
   } catch (error) {
     console.error('Error fetching plan data:', error);
   }

@@ -70,7 +70,7 @@ const logout = () => {
 };
 
 const showMore = (id) => {
-  router.push({ name: 'detalle-plan', params: { id } });
+  router.push({ name: 'proveedor-detail', params: { id } });
 };
 
 onMounted(fetchData);
