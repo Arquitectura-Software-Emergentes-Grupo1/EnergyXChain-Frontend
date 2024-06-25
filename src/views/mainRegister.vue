@@ -127,7 +127,7 @@
     text-align: center;
     max-width: 500px;
     margin: auto;
-    margin-top: 10%;
+    margin-top: 12%;
   }
   
   .register-title .forgot-password .register {
