@@ -47,10 +47,14 @@ export default {
     const sharedVariable = computed(() => globalStore.sharedVariable);
 
     const clientLogged = () => {
-        globalStore.setSharedVariable('client');
+      localStorage.setItem('typeUser', 'client');
+      globalStore.setSharedVariable('client');
+
     };
     const supplierLogged = () => {
-        globalStore.setSharedVariable('supplier');
+      localStorage.setItem('typeUser', 'supplier');
+      globalStore.setSharedVariable('supplier');
+  
     };
 
     const router = useRouter();

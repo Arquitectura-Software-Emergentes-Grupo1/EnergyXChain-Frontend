@@ -36,7 +36,8 @@ export default {
       const sharedVariable = computed(() => globalStore.sharedVariable);
 
       const userLogout = () => {
-          globalStore.setSharedVariable('login');
+          localStorage.setItem('typeUser', 'login');
+globalStore.setSharedVariable('login');
       };
       const router = useRouter();  
       

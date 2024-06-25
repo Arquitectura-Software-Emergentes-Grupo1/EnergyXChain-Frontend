@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 export const useGlobalStore = defineStore('global', {
     state: () => ({
-        sharedVariable: 'login',
+        sharedVariable: localStorage.getItem('typeUser') || 'login',
     }),
     actions: {
         setSharedVariable(newValue) {
