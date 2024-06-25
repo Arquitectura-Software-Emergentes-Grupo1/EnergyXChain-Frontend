@@ -3,123 +3,131 @@
     <h1>{{ proveedorData.name }}</h1>
     <div class="proveedorContainer">
       <div class="proveedorInfo">
-        <p> <span style="font-weight: bold;">Empresa:</span> {{ proveedorData.companyName }}</p>
-        <p> <span style="font-weight: bold;">Teléfono:</span> {{ proveedorData.cellphone }}</p>
-        <p> <span style="font-weight: bold;">Precio:</span> {{ proveedorData.price }}</p>
-        <p> <span style="font-weight: bold;">Correo:</span> {{ proveedorData.email }}</p>
+        <p><span style="font-weight: bold;">Empresa:</span> {{ proveedorData.name }}</p>
+        <p><span style="font-weight: bold;">Teléfono:</span> {{ proveedorData.phone }}</p>
+        <p><span style="font-weight: bold;">Precio:</span> {{ proveedorData.price }}</p>
+        <p><span style="font-weight: bold;">Correo:</span> {{ proveedorData.email }}</p>
       </div>
       <div class="proveedorCTA">
-        <img src="../assets/img/proveedor.webp" style="border-radius: 50%; width: 250px;">
+        <img src="../assets/img/proveedor.webp" alt="Proveedor" style="border-radius: 50%; width: 250px;">
         <Button @click="hire()" label="Contratar" style="background-color: #024955; border: #024955; width: 70%;" raised />
       </div>
     </div>
     <div class="proveedorDesc">
-        <p><span style="font-weight: bold;">Descripción:</span> </p>
-        <p>{{ proveedorData.description }}</p>
-      </div>
+      <p><span style="font-weight: bold;">Descripción:</span></p>
+      <p>{{ proveedorData.description }}</p>
+    </div>
+    <button class="logout-button" @click="logout()">Log Out</button>
   </div>
-  </template>
-  
-  <script>
-  import { getAuth, signOut } from 'firebase/auth';
-  import { useRouter } from 'vue-router';
-  import { ref, onMounted } from 'vue';
+</template>
 
-  export default {
-    
-    setup() {
-      const router = useRouter();
-      const userData = ref(null);
-      const proveedorData = ref(null);
-      proveedorData.value = {
-        id: 1,
-        name: 'Electrix +',
-        companyName: 'Empresa 1',
-        cellphone: '987654321',
-        price: 100,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tempor sapien nec leo luctus fermentum. Suspendisse eu scelerisque ipsum. Suspendisse at eleifend quam, vel rhoncus nisi. Ut laoreet risus nec mauris laoreet aliquam. Curabitur et rhoncus enim, vitae imperdiet augue. Sed non commodo elit. In dapibus congue velit ac semper. Donec vestibulum consequat libero, ac fermentum arcu laoreet id. Sed porta erat in ultricies porttitor. Duis commodo fringilla nisi, vitae convallis lorem interdum sit amet. Mauris tristique leo ut ligula dignissim, sit amet lacinia enim commodo. Quisque semper vehicula velit, in faucibus leo. Mauris pharetra felis a condimentum ornare',
-        email: 'electrix@company.com'
-      };
-      console.log(proveedorData.value);
-      onMounted(() => {
-        const storedUserData = JSON.parse(localStorage.getItem('userData'));
-        if (storedUserData) {
-          userData.value = storedUserData;
-        } else {
-          router.push('/');
-        }
-        
-      });
-  
-      const logout = () => {
-        signOut(getAuth())
-          .then(() => {
-            console.log('Usuario deslogueado');
-            localStorage.removeItem('userData');
-            router.push('/');
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      };
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { getAuth, signOut } from 'firebase/auth';
+import { API_BASE_URL } from '@/config';
 
-      const hire = () => {
-        router.push({ name: 'pagar'});
-      };
-  
-      return { userData, logout, hire, proveedorData};
+const router = useRouter();
+const proveedorData = ref({
+  id: null,
+  name: '',
+  companyName: '',
+  cellphone: '',
+  price: null,
+  description: '',
+  email: ''
+});
+
+onMounted(async () => {
+  const storedUserData = JSON.parse(localStorage.getItem('userData'));
+  if (!storedUserData) {
+    router.push('/');
+    return;
+  }
+
+  const { id } = router.currentRoute.value.params;
+  try {
+    const response = await fetch(`${API_BASE_URL}api/v0/supplier/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': true
+      }
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
+    const jsonData = await response.json();
+    proveedorData.value = jsonData;
+  } catch (error) {
+    console.error('Error fetching supplier data:', error);
   }
-  </script>
-  
-  <style >
-  .logout-button {
-    background-color: #024955;
-    color: white;
-    width: 160px;
-    height: 48px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-  h1{
-    color: black;
-    text-align: center;
-  }
-  body{
-    background-color: white !important;
-  }
-  .proveedorInfo{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 2rem;
-    background-color: #C3EDF5;
-    border-radius: 20px;
-  }
-  .proveedorDesc{
-    display: flex;
-    flex-direction: column;
-    padding: 0 2rem;
-    background-color: #C3EDF5;
-    border-radius: 20px;
-    margin-top: 2rem;
-    height: 400px;
-  }
-  .proveedorCTA{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-  }
-  .proveedorContainer{
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-  </style>
-  
+});
+
+const logout = () => {
+  signOut(getAuth())
+    .then(() => {
+      console.log('Usuario deslogueado');
+      localStorage.removeItem('userData');
+      router.push('/');
+    })
+    .catch((error) => {
+      console.error('Error logging out:', error);
+    });
+};
+
+const hire = () => {
+  router.push({ name: 'pagar' });
+};
+</script>
+
+<style scoped>
+.logout-button {
+  background-color: #024955;
+  color: white;
+  width: 160px;
+  height: 48px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+h1 {
+  color: black;
+  text-align: center;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.proveedorContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+.proveedorInfo {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.proveedorCTA {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.proveedorDesc {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  min-height: 200px;
+  overflow-y: auto;
+}
+</style>
