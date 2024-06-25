@@ -6,7 +6,7 @@
               <Column v-for="col of columns" :key="col.field" :field="col.field" :header="col.header"></Column>
               <Column header="Acción">
                 <template #body="slotProps">
-                    <Button @click="showMore(slotProps.data.id)" label="Eliminar" style="background-color: #024955; border: #024955;" raised />
+                    <Button @click="deletePlan(slotProps.data.id)" label="Eliminar" style="background-color: #024955; border: #024955;" raised />
                 </template>
               </Column>
             </DataTable>
@@ -26,6 +26,7 @@ import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { useGlobalStore } from '@/stores/globalStore';
 import { computed } from 'vue';
+import { API_BASE_URL } from '@/config';
 
 const pagos = ref(true);
 
@@ -34,14 +35,16 @@ export default {
   setup() {
       const globalStore = useGlobalStore();
       const sharedVariable = computed(() => globalStore.sharedVariable);
-
+      const user = JSON.parse(localStorage.getItem('userData'));
       const userLogout = () => {
-          globalStore.setSharedVariable('login');
+          localStorage.setItem('typeUser', 'login');
+globalStore.setSharedVariable('login');
       };
+      const userId = ref();
       const router = useRouter();  
 
       const products = ref([
-        {
+        /* {
           id: 1,
           serviceName: 'Empresa 1',
           price: 100,
@@ -61,7 +64,7 @@ export default {
           price: 300,
           description: 'lorem ipsum...',
           action: 'Acción 3'
-        },
+        }, */
       ]);
       const columns = [
           { field: 'serviceName', header: 'Nombre del Servicio' },
@@ -84,17 +87,58 @@ export default {
           });
       };
 
-      const showMore = (id) => {
+      const deletePlan = async (id) => {
         console.log('Ver más', id);
-        router.push({ name: 'proveedor-detail', params: { id } });
+        const data = await fetch(`${API_BASE_URL}api/v0/plan/${id}`,{
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          }
+        });
+        console.log("RESPONSE", data)
 
       };
       const addService = () => {
         router.push({ name: 'nuevo-servicio' });
       };
-  
-      return { logout, showMore, addService, columns, products, router};
-    }
+
+      const getUserId = async () => {
+        const data = await fetch(`${API_BASE_URL}api/v0/supplier/uid=${user.uid}`,{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          }
+        });
+        const jsonData = await data.json();
+
+        console.log("USERID",jsonData);
+        userId.value = jsonData.id;
+      }
+      const getData = async () => {
+        //hacer fetch a endpoint de get servicios
+        const data = await fetch(`${API_BASE_URL}api/v0/plan/supplier/${userId.value}`,{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          }
+        });
+        const jsonData = await data.json();
+
+        console.log("SERVICIOS DE SUPPLIER",jsonData);
+        products.value = jsonData;
+      }
+      
+      onMounted(async () => {
+        await getUserId()
+        await getData()
+
+      });
+      return { logout, deletePlan, addService, columns, products, router};
+    },
+    
 }
 </script>
 
