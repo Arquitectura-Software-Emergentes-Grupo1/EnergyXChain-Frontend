@@ -67,8 +67,8 @@ globalStore.setSharedVariable('login');
         }, */
       ]);
       const columns = [
-          { field: 'serviceName', header: 'Nombre del Servicio' },
-          { field: 'price', header: 'Precio' },
+          { field: 'name', header: 'Nombre del Servicio' },
+          { field: 'fee', header: 'Precio' },
           { field: 'description', header: 'Descripción' },
       ]; 
 
@@ -97,6 +97,7 @@ globalStore.setSharedVariable('login');
           }
         });
         console.log("RESPONSE", data)
+        await getData()
 
       };
       const addService = () => {
