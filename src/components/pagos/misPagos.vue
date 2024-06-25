@@ -87,7 +87,7 @@ export default {
         const jsonData = await data.json();
 
         console.log("PAGOS CLIENTE",jsonData);
-        products.value = jsonData;
+        /* products.value = jsonData; */
       }
       
       onMounted(async () => {
