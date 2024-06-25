@@ -24,7 +24,7 @@ export default {
       const user = JSON.parse(localStorage.getItem('userData'));
       const userId = ref();
       const products = ref([
-        /* {
+        {
           id: 1,
           supplier: 'Proveedor 1',
           companyName: 'Empresa 1',
@@ -47,7 +47,7 @@ export default {
           monto: 300,
           feVenci: '0/0/0',
           action: 'Acción 3'
-        }, */
+        },
       ]);
       const columns = [
           { field: 'supplier', header: 'Proveedor' },
