@@ -29,7 +29,7 @@ export default {
         justify-content: space-between;
         transition: all 0.6s ease;
         padding: .50rem;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+        background: #C3EDF5;
     }
     .nav-bar-content {
         display: flex;
@@ -61,7 +61,7 @@ export default {
     }
     .nav-links li a {
         display: block;
-        color: white;
+        color: black;
         text-align: center;
         padding: 14px 16px;
         text-decoration: none;

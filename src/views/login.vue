@@ -11,13 +11,14 @@
       <label for="password" class="input-label">Contraseña</label>
     </FloatLabel>
     <label for="typeUser" class="input-label">Tipo de Usuario</label>
-    <FloatLabel style="margin-bottom: 30px;">
-      <select id="typeUser" v-model="typeUser" class="input-select">
-        <option value="" disabled>Seleccione Tipo de Usuario</option>
+    <FloatLabel style="margin-bottom: 30px;  ">
+      <select id="typeUser" v-model="typeUser" class="input-select" style="color: #808080;width: 96%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; appearance: none; background-color: #fff;">
+        <option value="" disabled >Seleccione Tipo de Usuario</option>
         <option value="cliente">Cliente</option>
         <option value="proveedor">Proveedor</option>
       </select>
     </FloatLabel>
+   
     <div class="forgot-password" style="margin-bottom: 10px;">¿Olvidó la contraseña? <RouterLink to="/forgot-password" style="color: #024955">Cambiar contraseña</RouterLink></div>
     <button class="login-button" style="margin-bottom: 25px;" @click="login()">Iniciar Sesión</button>
     <div class="register">¿Sin registrarte aún? <RouterLink to="/main-register" style="color: #024955">Registrar</RouterLink></div>
@@ -119,7 +120,7 @@ export default {
   text-align: center;
   max-width: 400px;
   margin: auto;
-  margin-top: 10%;
+  margin-top: 3%;
 }
 
 #logo {
