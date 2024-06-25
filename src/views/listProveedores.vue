@@ -1,9 +1,16 @@
 <template>
   <div class="container">
-    <h1>Lista de proveedores</h1>
+    <h1>Lista de planes</h1>
     <div class="card">
-      <DataTable :value="products" stripedRows paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
-        <Column v-for="col of columns" :key="col.field" :field="col.field" :header="col.header"></Column>
+      <DataTable :value="plans" stripedRows paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
+        <Column field="name" header="Nombre"></Column>
+        <Column field="description" header="Descripción"></Column>
+        <Column field="fee" header="Tarifa"></Column>
+        <Column header="Proveedor">
+          <template #body="slotProps">
+            {{ slotProps.data.supplier.name }}
+          </template>
+        </Column>
         <Column header="Acción">
           <template #body="slotProps">
             <Button @click="showMore(slotProps.data.id)" label="Ver más" style="background-color: #024955; border: #024955;" raised />
@@ -11,7 +18,7 @@
         </Column>
       </DataTable>
     </div>
-    <button class="logout-button" @click="logout()">Log Out</button>
+    <button class="logout-button" @click="logout()">Cerrar sesión</button>
   </div>
 </template>
 
@@ -24,16 +31,16 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
 const router = useRouter();
-const products = ref([]);
+const plans = ref([]);
 const columns = [
-  { field: 'name', header: 'Proveedor' },
-  { field: 'price', header: 'Precio' },
+  { field: 'name', header: 'Nombre' },
   { field: 'description', header: 'Descripción' },
+  { field: 'fee', header: 'Tarifa' },
 ];
 
 const fetchData = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}api/v0/supplier`, {
+    const response = await fetch(`${API_BASE_URL}api/v0/plan`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -41,12 +48,12 @@ const fetchData = async () => {
       }
     });
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error('Error de red al obtener los planes');
     }
     const jsonData = await response.json();
-    products.value = jsonData;
-  } catch (err) {
-    console.error('Error fetching supplier data:', err);
+    plans.value = jsonData;
+  } catch (error) {
+    console.error('Error al obtener los datos de los planes:', error);
   }
 };
 
@@ -58,12 +65,12 @@ const logout = () => {
       router.push('/');
     })
     .catch((error) => {
-      console.error('Error logging out:', error);
+      console.error('Error al cerrar sesión:', error);
     });
 };
 
 const showMore = (id) => {
-  router.push({ name: 'proveedor-detail', params: { id } });
+  router.push({ name: 'detalle-plan', params: { id } });
 };
 
 onMounted(fetchData);
