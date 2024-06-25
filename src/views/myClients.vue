@@ -1,5 +1,5 @@
 <template>
-    <div class="container" style="margin-top: 100px;">
+    <div class="container">
       <h1>Mis Clientes</h1>
       <div class="card">
         <DataTable :value="clients" stripedRows paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
@@ -21,11 +21,13 @@
   import { ref, onMounted } from 'vue';
   import { useGlobalStore } from '@/stores/globalStore';
   import { computed } from 'vue';
-  
+  import { API_BASE_URL } from '@/config';
   export default {
     setup() {
       const globalStore = useGlobalStore();
       const sharedVariable = computed(() => globalStore.sharedVariable);
+      const user = JSON.parse(localStorage.getItem('userData'));
+      const userId = ref();
 
       const userLogout = () => {
           localStorage.setItem('typeUser', 'login');
@@ -34,7 +36,7 @@ globalStore.setSharedVariable('login');
       const router = useRouter();  
   
       const clients = ref([
-        {
+        /* {
           idClient: 1,
           nameClient: 'Cliente 1',
           service: 'Servicio 1',
@@ -57,7 +59,7 @@ globalStore.setSharedVariable('login');
           amount: 100,
           state: true,
           profile: ''
-        }
+        } */
       ]);
   
       const columns = [
@@ -85,6 +87,38 @@ globalStore.setSharedVariable('login');
         router.push({ name: 'client-info', params: { id } });
       };
   
+      const getUserId = async () => {
+        const data = await fetch(`${API_BASE_URL}api/v0/supplier/uid=${user.uid}`,{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          }
+        });
+        const jsonData = await data.json();
+
+        console.log("USERID",jsonData);
+        userId.value = jsonData.id;
+      }
+      const getData = async () => {
+        //hacer fetch a endpoint de get servicios
+        const data = await fetch(`${API_BASE_URL}api/v0/supplier/${userId.value}/customers`,{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true
+          }
+        });
+        const jsonData = await data.json();
+
+        console.log("CLIENTES DE SUPPLIER" ,jsonData);
+        clients.value = jsonData;
+      }
+      onMounted(async () => {
+        await getUserId()
+        await getData()
+
+      });
       return { logout, showMore, columns, clients, router };
     }
   }
